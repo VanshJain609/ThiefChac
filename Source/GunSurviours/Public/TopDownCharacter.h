@@ -16,13 +16,6 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
-	UPROPERTY(EditAnywhere)
-	class USpringArmComponent* SpringArm;
-
-	
-
-
 public:	
 	virtual void Tick(float DeltaTime) override;
 
