@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/CapsuleComponent.h"
+#include "PaperFlipbookComponent.h"
 #include "GameFramework/Pawn.h"
 #include "TopDownCharacter.generated.h"
 
@@ -12,13 +14,19 @@ class GUNSURVIOURS_API ATopDownCharacter : public APawn
 	GENERATED_BODY()
 
 public:
+	//Create CapsuleComponent
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UCapsuleComponent* CapsuleComp;
+
+	//Create Flipbook
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UPaperFlipbookComponent* CharacterFlipbook;
+
+	//Constructor
 	ATopDownCharacter();
-
-protected:
+	
 	virtual void BeginPlay() override;
-public:	
 	virtual void Tick(float DeltaTime) override;
-
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };

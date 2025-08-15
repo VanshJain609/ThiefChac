@@ -8,6 +8,16 @@ ATopDownCharacter::ATopDownCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	//Setting up CapsuleComponent
+	CapsuleComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComp"));
+	//Attaching Capsule Component as RootComponent
+	SetRootComponent(CapsuleComp);
+
+	//Setting up FlipbookComponent
+	CharacterFlipbook = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("CharacterFlipbook"));
+	//Attaching CharacterFlipbook to the RootComponent
+	CharacterFlipbook->SetupAttachment(RootComponent);
+
 }
 
 void ATopDownCharacter::BeginPlay()
