@@ -23,7 +23,20 @@ ATopDownCharacter::ATopDownCharacter()
 void ATopDownCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	//Getting the PlayerController
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if (PlayerController)
+	{
+		//Getting Enhanced SubSystems from the Player Controller
+		UEnhancedInputLocalPlayerSubsystem* SubSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>
+		(PlayerController->GetLocalPlayer());
+		if (SubSystem)
+		{
+			//Registering the MappingContext
+			SubSystem->AddMappingContext(InputMappingContext, 0);
+		}
+	}
 }
 
 void ATopDownCharacter::Tick(float DeltaTime)
