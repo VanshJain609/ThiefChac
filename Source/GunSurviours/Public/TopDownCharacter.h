@@ -39,12 +39,28 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadonly)
 	UInputAction* ShootAction;
 
+	//MovementSpeed
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float MovementSpeed = 100.f;
 
+	//MovementDirection
+	UPROPERTY(BlueprintReadWrite)
+	FVector2D MovementDirection;
+
+	// Creating Bool to Check Player can Move or Not
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	bool CanMove = true;
+	
 	//Constructor
 	ATopDownCharacter();
 	
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	//Defining Input Actions Functions
+	void MoveTriggered(const FInputActionValue& Value);
+	void MoveCompleted(const FInputActionValue& Value);
+	void Shoot(const FInputActionValue& Value);
 
 };
