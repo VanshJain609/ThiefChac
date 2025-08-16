@@ -39,6 +39,23 @@ void ATopDownCharacter::BeginPlay()
 	}
 }
 
+bool ATopDownCharacter::IsInMapBoundsHorizontal(float XPos)
+{
+	// To Keep the Player Inside the Bounds
+	bool Result = true;
+
+	Result = (XPos > HorizontalLimits.X) && (XPos < HorizontalLimits.Y);
+	return Result;
+}
+
+bool ATopDownCharacter::IsInMapBoundsVertical(float ZPos)
+{
+	bool Result = true;
+
+	Result = (ZPos > VerticalLimits.X) && (ZPos < VerticalLimits.Y);
+	return Result;
+}
+
 void ATopDownCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -61,7 +78,16 @@ void ATopDownCharacter::Tick(float DeltaTime)
 			FVector CurrentLocation = GetActorLocation();
 
 			//Getting the New Location
-			FVector NewLocation = CurrentLocation + FVector(DistanceToMove.X, 0.0f, DistanceToMove.Y);
+			FVector NewLocation = CurrentLocation + FVector(DistanceToMove.X, 0.0f, 0.0f);
+			if (!IsInMapBoundsHorizontal(NewLocation.X))
+			{
+				NewLocation -= FVector(DistanceToMove.X, 0.0f, 0.0f);
+			}
+			NewLocation += FVector(0.0f, 0.0f, DistanceToMove.Y);
+			if (!IsInMapBoundsVertical(NewLocation.Z))
+			{
+				NewLocation -= FVector(0.0f, 0.0f, DistanceToMove.Y);
+			}
 			SetActorLocation(NewLocation);
 		}
 	}

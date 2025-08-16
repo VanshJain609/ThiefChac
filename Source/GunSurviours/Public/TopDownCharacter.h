@@ -43,8 +43,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UPaperFlipbook* IdleFlipbook;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UPaperFlipbook* RunFlipbook;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector2D HorizontalLimits;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector2D VerticalLimits;
 
 	//MovementSpeed
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -69,5 +75,9 @@ public:
 	void MoveTriggered(const FInputActionValue& Value);
 	void MoveCompleted(const FInputActionValue& Value);
 	void Shoot(const FInputActionValue& Value);
+
+	//To Chcek if Player is Inside the BoundWalls or Not
+	bool IsInMapBoundsHorizontal(float XPos);
+	bool IsInMapBoundsVertical(float ZPos);
 
 };
