@@ -39,6 +39,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadonly)
 	UInputAction* ShootAction;
 
+	// Creating Flipbook for Animations
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPaperFlipbook* IdleFlipbook;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPaperFlipbook* RunFlipbook;
+
 	//MovementSpeed
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MovementSpeed = 100.f;
