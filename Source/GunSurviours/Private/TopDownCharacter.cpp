@@ -2,6 +2,8 @@
 
 
 #include "TopDownCharacter.h"
+
+#include "Bullet.h"
 #include "Kismet/KismetMathLibrary.h"
 
 
@@ -183,4 +185,34 @@ void ATopDownCharacter::MoveCompleted(const FInputActionValue& Value)
 
 void ATopDownCharacter::Shoot(const FInputActionValue& Value)
 {
+	if (CanShoot)
+	{
+		CanShoot = false;
+		//Spawn Bullet Actors
+		ABullet* Bullet = GetWorld()->SpawnActor<ABullet>(BulletActorToSpawn, BulletSpawnPosition->
+			GetComponentLocation(), FRotator(0.0f, 0.0f, 0.0f));
+		check(Bullet);
+
+		//Get Mouse World Location
+		APlayerController* PlayerController = Cast<APlayerController>(Controller);
+		check(PlayerController);
+			FVector MouseWorldLocation, MouseWorldDirection;
+			PlayerController->DeprojectMousePositionToWorld(MouseWorldLocation, MouseWorldDirection);
+
+		//Calculate Bullet Direction
+		FVector CurrentLocation = GetActorLocation();
+		FVector2D BulletDirection = FVector2D(MouseWorldLocation.X - CurrentLocation.X, MouseWorldLocation.Z - CurrentLocation.Z);
+		BulletDirection.Normalize();
+
+		//Launch the Bullet
+		float BulletSpeed = 300.0f;
+		Bullet->Launch(BulletDirection, BulletSpeed);
+		
+		GetWorldTimerManager().SetTimer(ShootCoolDownTimer, this, &ATopDownCharacter::OnShootCoolDownTimerTimeOut, 1.0f, false, ShootCoolDownDurationInSeconds);
+	}
+}
+
+void ATopDownCharacter::OnShootCoolDownTimerTimeOut()
+{
+	CanShoot = true;
 }

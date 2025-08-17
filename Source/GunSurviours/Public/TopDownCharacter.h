@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Bullet.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SceneComponent.h"
 #include "PaperFlipbookComponent.h"
@@ -12,6 +13,7 @@
 #include "Components/InputComponent.h"
 #include "InputAction.h"
 #include "GameFramework/Controller.h"
+#include "Engine/TimerHandle.h"
 #include "GameFramework/Pawn.h"
 #include "TopDownCharacter.generated.h"
 
@@ -66,6 +68,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector2D VerticalLimits;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ABullet> BulletActorToSpawn;
+
 	//MovementSpeed
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MovementSpeed = 100.f;
@@ -77,6 +82,15 @@ public:
 	// Creating Bool to Check Player can Move or Not
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool CanMove = true;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	bool CanShoot = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float ShootCoolDownDurationInSeconds = 0.3f;
+
+	FTimerHandle ShootCoolDownTimer;
+
 	
 	//Constructor
 	ATopDownCharacter();
@@ -93,5 +107,6 @@ public:
 	//To Chcek if Player is Inside the BoundWalls or Not
 	bool IsInMapBoundsHorizontal(float XPos);
 	bool IsInMapBoundsVertical(float ZPos);
+	void OnShootCoolDownTimerTimeOut();
 
 };
