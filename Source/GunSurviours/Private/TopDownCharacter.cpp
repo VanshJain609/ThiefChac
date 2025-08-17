@@ -2,6 +2,7 @@
 
 
 #include "TopDownCharacter.h"
+#include "Kismet/KismetMathLibrary.h"
 
 
 ATopDownCharacter::ATopDownCharacter()
@@ -18,6 +19,17 @@ ATopDownCharacter::ATopDownCharacter()
 	//Attaching CharacterFlipbook to the RootComponent
 	CharacterFlipbook->SetupAttachment(RootComponent);
 
+	//Setting up GunParent
+	GunParent = CreateDefaultSubobject<USceneComponent>(TEXT("GunParent"));
+	GunParent->SetupAttachment(RootComponent);
+
+	//Setting up GunSprite
+	GunSprite = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("GunSprite"));
+	GunSprite->SetupAttachment(GunParent);
+
+	//Setting up BulletSpawnPosition
+	BulletSpawnPosition = CreateDefaultSubobject<USceneComponent>(TEXT("BulletSpawnPosition"));
+	BulletSpawnPosition->SetupAttachment(GunSprite);
 }
 
 void ATopDownCharacter::BeginPlay()
@@ -28,6 +40,8 @@ void ATopDownCharacter::BeginPlay()
 	APlayerController* PlayerController = Cast<APlayerController>(Controller);
 	if (PlayerController)
 	{
+		//To Display Mouse Cursor Every Second
+		PlayerController->SetShowMouseCursor(true);
 		//Getting Enhanced SubSystems from the Player Controller
 		UEnhancedInputLocalPlayerSubsystem* SubSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem> 
 		(PlayerController->GetLocalPlayer());
@@ -92,6 +106,22 @@ void ATopDownCharacter::Tick(float DeltaTime)
 		}
 	}
 
+	//Rotate the Gun
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if (PlayerController)
+	{
+		//To Get the Location and Direction of the Mouse 
+		FVector MouseWorldLocation , MouseWorldDirection;
+		PlayerController->DeprojectMousePositionToWorld(MouseWorldLocation, MouseWorldDirection);
+
+		//Getting the Current Location and then giving the New Location
+		FVector CurrentLocation = GetActorLocation();
+		FVector Start = FVector(CurrentLocation.X, 0.0f, CurrentLocation.Z);
+		FVector Target = FVector(MouseWorldLocation.X, 0.0f, MouseWorldLocation.Z);
+		FRotator GunParentRotator = UKismetMathLibrary::FindLookAtRotation(Start, Target);
+
+		GunParent->SetRelativeRotation(GunParentRotator);
+	}
 }
 
 void ATopDownCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

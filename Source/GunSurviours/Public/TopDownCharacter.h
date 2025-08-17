@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SceneComponent.h"
 #include "PaperFlipbookComponent.h"
+#include "PaperSpriteComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Components/InputComponent.h"
@@ -26,6 +28,18 @@ public:
 	//Create Flipbook
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UPaperFlipbookComponent* CharacterFlipbook;
+
+	//Creating Scene Component for Gun
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	USceneComponent* GunParent;
+
+	//Creating Sprite for Gun
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UPaperSpriteComponent* GunSprite;
+
+	//Creating Scene Component for Bullet Spawn
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	USceneComponent* BulletSpawnPosition;
 
 	// Creating MappingContext
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
