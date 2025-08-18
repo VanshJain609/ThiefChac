@@ -88,6 +88,7 @@ void AEnemySpawner::SetUpEnemy(AEnemy* Enemy)
 
 void AEnemySpawner::OnEnemyDied()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("EnemyDied"));
+	int ScoreToAdd = 10;
+	MyGameMode->AddScore(ScoreToAdd);
 }
 
