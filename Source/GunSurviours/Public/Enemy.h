@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Components/CapsuleComponent.h"
 #include "PaperFlipbookComponent.h"
+#include "Engine/TimerHandle.h"
 #include "TopDownCharacter.h"
 #include "Enemy.generated.h"
 
@@ -20,6 +21,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UPaperFlipbookComponent* EnemyFlipbook;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPaperFlipbook* DeadFlipbookAsset;
 
 	//Creating Refrence for the Enemy so that Enemy can Chase the Player
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
@@ -36,10 +40,14 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float StopDistance = 20.0f;
+
+	FTimerHandle DestroyTimer;
 	
 	AEnemy();
 	
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+	void Die();
+	void OnDestroyTimerTimeOut();
 
 };
