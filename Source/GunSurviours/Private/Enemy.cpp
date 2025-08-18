@@ -18,16 +18,6 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (!Player)
-	{
-		AActor* PlayerActor = UGameplayStatics::GetActorOfClass(GetWorld(), ATopDownCharacter::StaticClass());
-		if (PlayerActor)
-		{
-			Player = Cast<ATopDownCharacter>(PlayerActor);
-			CanFollow = true;
-		}
-	}
 }
 
 void AEnemy::Tick(float DeltaTime)
@@ -78,6 +68,7 @@ void AEnemy::Die()
 	EnemyFlipbook->SetFlipbook(DeadFlipbookAsset);
 	EnemyFlipbook->SetTranslucentSortPriority(-5);
 
+	EnemyDiedDelegate.Broadcast();
 	float DestroyTime = 10.0f;
 	GetWorldTimerManager().SetTimer(DestroyTimer, this, &AEnemy::OnDestroyTimerTimeOut, 1.0f, false, DestroyTime);
 }

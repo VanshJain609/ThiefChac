@@ -3,16 +3,28 @@
 
 #include "EnemySpawner.h"
 
+#include "Kismet/GameplayStatics.h"
+
 AEnemySpawner::AEnemySpawner()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	
 }
 
 void AEnemySpawner::BeginPlay()
 {
 	Super::BeginPlay();
-
+	AGameModeBase* GameMode = UGameplayStatics::GetGameMode(GetWorld());
+	if (GameMode)
+	{
+		MyGameMode = Cast<AMyGameMode>(GameMode);
+		check(MyGameMode);
+	}
+	
+	AActor* PlayerActor = UGameplayStatics::GetActorOfClass(GetWorld(), ATopDownCharacter::StaticClass());
+	if (PlayerActor)
+	{
+		Player = Cast<ATopDownCharacter>(PlayerActor);
+	}
 	StartSpawning();
 }
 
@@ -46,7 +58,7 @@ void AEnemySpawner::SpawnEnemy()
 	
 	FVector EnemyLocation = GetActorLocation() + FVector(RandomPosition.X, 0.0f, RandomPosition.Y);
 	AEnemy* Enemy = GetWorld()->SpawnActor<AEnemy>(EnemyActorToSpawn, EnemyLocation, FRotator::ZeroRotator);
-
+	SetUpEnemy(Enemy);
 	//Increase the Difficulty of the Enemy
 	TotalEnemyCount +=1;
 	if ((TotalEnemyCount % DifficultySpikeInterval) == 0)
@@ -62,5 +74,20 @@ void AEnemySpawner::SpawnEnemy()
 			StartSpawning();
 		}
 	}
+}
+
+void AEnemySpawner::SetUpEnemy(AEnemy* Enemy)
+{
+	if (Enemy)
+	{
+		Enemy->Player = Player;
+		Enemy->CanFollow = true;
+		Enemy->EnemyDiedDelegate.AddDynamic(this, &AEnemySpawner::OnEnemyDied);
+	}
+}
+
+void AEnemySpawner::OnEnemyDied()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("EnemyDied"));
 }
 

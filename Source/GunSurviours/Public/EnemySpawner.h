@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Engine/TimerHandle.h"
 #include "Enemy.h"
+#include "TopDownCharacter.h"
+#include "MyGameMode.h"
 #include "EnemySpawner.generated.h"
 
 UCLASS()
@@ -35,7 +37,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float DecreaseSpawnTimerByEveryInterval = 0.05f;
 
+	ATopDownCharacter* Player;
+
 	FTimerHandle SpawnTimer;
+
+	AMyGameMode* MyGameMode;
 	
 	AEnemySpawner();
 	
@@ -46,5 +52,9 @@ public:
 	void StartSpawning();
 	void StopSpawning();
 	void SpawnEnemy();
+	void SetUpEnemy(AEnemy* Enemy);
+
+	UFUNCTION()
+	void OnEnemyDied();
 
 };
