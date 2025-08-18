@@ -17,6 +17,8 @@
 #include "GameFramework/Pawn.h"
 #include "TopDownCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPlayerDiedDelegate);
+
 UCLASS()
 class GUNSURVIOURS_API ATopDownCharacter : public APawn
 {
@@ -86,10 +88,15 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool CanShoot = true;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	bool IsAlive = true;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float ShootCoolDownDurationInSeconds = 0.3f;
 
 	FTimerHandle ShootCoolDownTimer;
+
+	FPlayerDiedDelegate PlayerDiedDelegate;
 
 	
 	//Constructor
@@ -108,5 +115,9 @@ public:
 	bool IsInMapBoundsHorizontal(float XPos);
 	bool IsInMapBoundsVertical(float ZPos);
 	void OnShootCoolDownTimerTimeOut();
+
+	UFUNCTION()
+	void OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 
 };

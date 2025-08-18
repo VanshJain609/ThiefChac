@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "MyGameMode.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FScoreChangeDelegate, int, NewScore);
+
 /**
  * 
  */
@@ -18,6 +20,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	int Score = 0;
 
+	UPROPERTY(BlueprintAssignable)
+	FScoreChangeDelegate ScoreChangeDelegate;
+	
 	AMyGameMode();
 	virtual void BeginPlay() override;
 

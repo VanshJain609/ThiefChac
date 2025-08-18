@@ -4,6 +4,7 @@
 #include "TopDownCharacter.h"
 
 #include "Bullet.h"
+#include "Enemy.h"
 #include "Kismet/KismetMathLibrary.h"
 
 
@@ -53,6 +54,7 @@ void ATopDownCharacter::BeginPlay()
 			SubSystem->AddMappingContext(InputMappingContext, 0);
 		}
 	}
+	CapsuleComp->OnComponentBeginOverlap.AddDynamic(this, &ATopDownCharacter::OverlapBegin);
 }
 
 bool ATopDownCharacter::IsInMapBoundsHorizontal(float XPos)
@@ -215,4 +217,22 @@ void ATopDownCharacter::Shoot(const FInputActionValue& Value)
 void ATopDownCharacter::OnShootCoolDownTimerTimeOut()
 {
 	CanShoot = true;
+}
+
+void ATopDownCharacter::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	AEnemy* Enemy = Cast<AEnemy>(OtherActor);
+
+	if (Enemy && Enemy->IsAlive)
+	{
+		if (IsAlive)
+		{
+			IsAlive = false;
+			CanMove = false;
+			CanShoot = false;
+
+			PlayerDiedDelegate.Broadcast();
+		}
+	}
 }
