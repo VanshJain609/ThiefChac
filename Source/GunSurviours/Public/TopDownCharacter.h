@@ -8,12 +8,13 @@
 #include "Components/SceneComponent.h"
 #include "PaperFlipbookComponent.h"
 #include "PaperSpriteComponent.h"
-#include "EnhancedInputComponent.h"
+
 #include "EnhancedInputSubsystems.h"
 #include "Components/InputComponent.h"
 #include "InputAction.h"
 #include "GameFramework/Controller.h"
 #include "Engine/TimerHandle.h"
+#include "Sound/SoundBase.h"
 #include "GameFramework/Pawn.h"
 #include "TopDownCharacter.generated.h"
 
@@ -63,6 +64,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UPaperFlipbook* RunFlipbook;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	USoundBase* BulletShootSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	USoundBase* DieSound;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector2D HorizontalLimits;

@@ -8,6 +8,7 @@
 #include "PaperFlipbookComponent.h"
 #include "Engine/TimerHandle.h"
 #include "TopDownCharacter.h"
+#include "Sound/SoundBase.h"
 #include "Enemy.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEnemyDiedDelegate);
@@ -26,6 +27,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UPaperFlipbook* DeadFlipbookAsset;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USoundBase* DieSound;
 
 	//Creating Refrence for the Enemy so that Enemy can Chase the Player
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)

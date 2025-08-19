@@ -2,10 +2,11 @@
 
 
 #include "TopDownCharacter.h"
-
+#include "EnhancedInputComponent.h"
 #include "Bullet.h"
 #include "Enemy.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 
 ATopDownCharacter::ATopDownCharacter()
@@ -182,7 +183,10 @@ void ATopDownCharacter::MoveCompleted(const FInputActionValue& Value)
 	MovementDirection = FVector2D(0.0f, 0.0f);
 
 	//Switching Run Animation to Idle Animation
-	CharacterFlipbook->SetFlipbook(IdleFlipbook);
+	if (IsAlive)
+	{
+		CharacterFlipbook->SetFlipbook(IdleFlipbook);
+	}
 }
 
 void ATopDownCharacter::Shoot(const FInputActionValue& Value)
@@ -211,12 +215,18 @@ void ATopDownCharacter::Shoot(const FInputActionValue& Value)
 		Bullet->Launch(BulletDirection, BulletSpeed);
 		
 		GetWorldTimerManager().SetTimer(ShootCoolDownTimer, this, &ATopDownCharacter::OnShootCoolDownTimerTimeOut, 1.0f, false, ShootCoolDownDurationInSeconds);
+
+		UGameplayStatics::PlaySound2D(GetWorld(), BulletShootSound);
 	}
 }
 
 void ATopDownCharacter::OnShootCoolDownTimerTimeOut()
 {
-	CanShoot = true;
+	if (IsAlive)
+	{
+		CanShoot = true;
+	}
+	
 }
 
 void ATopDownCharacter::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -232,6 +242,8 @@ void ATopDownCharacter::OverlapBegin(UPrimitiveComponent* OverlappedComponent, A
 			CanMove = false;
 			CanShoot = false;
 
+			UGameplayStatics::PlaySound2D(GetWorld(), DieSound);
+			
 			PlayerDiedDelegate.Broadcast();
 		}
 	}

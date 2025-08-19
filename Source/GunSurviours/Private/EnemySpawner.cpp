@@ -104,8 +104,8 @@ void AEnemySpawner::OnPlayerDied()
 		if (Enemy && Enemy->IsAlive)
 		{
 			Enemy->CanFollow = false;
-			
 		}
 	}
+	MyGameMode->RestartGame();
 }
 

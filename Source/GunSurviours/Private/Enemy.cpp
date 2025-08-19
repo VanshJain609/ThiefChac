@@ -69,8 +69,11 @@ void AEnemy::Die()
 	EnemyFlipbook->SetTranslucentSortPriority(-5);
 
 	EnemyDiedDelegate.Broadcast();
+	UGameplayStatics::PlaySound2D(GetWorld(), DieSound);
 	float DestroyTime = 10.0f;
 	GetWorldTimerManager().SetTimer(DestroyTimer, this, &AEnemy::OnDestroyTimerTimeOut, 1.0f, false, DestroyTime);
+
+	
 }
 
 

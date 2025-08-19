@@ -2,6 +2,7 @@
 
 
 #include "MyGameMode.h"
+#include "Kismet/GameplayStatics.h"
 
 AMyGameMode::AMyGameMode()
 {
@@ -28,4 +29,14 @@ void AMyGameMode::AddScore(int AmountToAdd)
 {
 	int NewScore = Score + AmountToAdd;
 	SetScore(NewScore);
+}
+
+void AMyGameMode::RestartGame()
+{
+	GetWorldTimerManager().SetTimer(RestartGameTimer, this , &AMyGameMode::RestartGameTimerTimeOut, 1.0f, false, TimeBeforeRestart);
+}
+
+void AMyGameMode::RestartGameTimerTimeOut()
+{
+	UGameplayStatics::OpenLevel(GetWorld(), FName("MainLevel"));
 }
