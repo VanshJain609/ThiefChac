@@ -1,0 +1,28 @@
+# Unreal Engine project intermediate files
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+
+# User-specific project files
+*.suo
+*.user
+*.userprefs
+*.sln.docstates
+
+# Backup files
+*.tmp
+*.bak
+*.backup
+*.log
+*.vs
+
+# Compiled source files
+*.pdb
+*.obj
+*.exe
+*.dll
+*.lib
+
+# Ignore Generated Folders
+.vs/
